@@ -2,4 +2,3 @@ secrets.py
 .*.swp
 .cache-*
 __pycache__/*
-.TODO
