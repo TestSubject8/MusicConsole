@@ -1,8 +1,8 @@
 ########## Basic functions: ###########
-    Start and stop music
-    Transfer playback to another device
+        Start and stop music
+Done -  Transfer playback to another device - working with menu now
     
 ########## Extra functions: ###########
-    Party button
-    Playlist buttons (rotary selector (dammit i'll need a display))
-    Status leds
+        Party button
+        Playlist buttons (rotary selector (dammit i'll need a display))
+        Status leds
