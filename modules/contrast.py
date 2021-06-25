@@ -1,12 +1,12 @@
 import sys
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 # import Encoder
 from signal import pause
 import time
 # import functional_console as console
 # from display import display, canvas
 
-# GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 # for x in [26]:
 #     GPIO.setup(x, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
@@ -23,6 +23,7 @@ class Menu():
         self.display = display
         self.name = 'Contrast'
         display.contrast(self.option)
+        self.light = False
         
     def change_disp(self, chan, draw):
         # print("Index at ", str(chan))
@@ -50,7 +51,12 @@ class Menu():
         # draw.text((17,13), str(text), fill='white')
         # draw.text((22,25), "Volume "+str(self.vol), fill='white')
         # self.interface(draw)
-        pass
+        if not self.light:
+            GPIO.output(4, GPIO.HIGH)
+            self.light = True
+        else:
+            GPIO.output(4, GPIO.LOW)
+            self.light = False
 
     def interface(self, draw):
         # draw.text((17,13), "Contrast", fill='white')

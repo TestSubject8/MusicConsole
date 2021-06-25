@@ -1,6 +1,7 @@
-import sys
+import sys, time
 import RPi.GPIO as GPIO
 from signal import pause
+from threading import Timer
 import importlib
 
 sys.path.append('modules/')
@@ -14,6 +15,9 @@ GPIO.setmode(GPIO.BCM)
 for x in [26, 16]:
     GPIO.setup(x, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+GPIO.setup(4, GPIO.OUT)
+GPIO.output(4, GPIO.LOW)
+
 class Tree:
     index1 = 0
     index2 = 0
@@ -23,6 +27,7 @@ class Tree:
         self.menu_enc = Encoder.Encoder(27,22, self.change_ind1)
         self.enc = Encoder.Encoder(5,6, self.change_ind2)
         GPIO.add_event_detect(26, GPIO.RISING, callback=self.run_func, bouncetime=400)
+        self.last_op_time = time.time()
         # GPIO.add_event_detect(16, GPIO.RISING, callback=self.run_func, bouncetime=200)
         
         # for i in range(len(self.items)):
@@ -35,6 +40,16 @@ class Tree:
         self.change_menu(0)
         pause()
 
+    def start_timers(self, chan):
+        if time.time() - self.last_op_time > 10:
+            t = Timer(10, self.obj.change_disp, [chan,canvas(display)])
+            t.start()
+            self.obj.timers.append(t)
+        else:
+            for i in self.obj.timers:
+                i.cancel()
+                self.obj.timers.remove(i)
+
     def change_ind1(self, chan):
         if self.index1 < chan:
             chg = 1
@@ -46,6 +61,7 @@ class Tree:
         self.index1 %= len(self.items)
         print("index1 ", str(self.index1), str(chg), str(chan))
         self.change_menu(0)
+        # self.start_timers(chan)
 
     def change_ind2(self, chan):
         if self.index2 < chan:

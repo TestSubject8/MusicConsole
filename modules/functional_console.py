@@ -15,9 +15,12 @@ def sp():
     global sp_driver
     # add code to check for existing alive token 
     at = json.loads(open('.cache-'+secrets.username).read())
-    if not sp_driver or at['expires_at'] - int(time.time()) < 60:
+    if not sp_driver:
         print("token refreshed")
-        token = util.prompt_for_user_token(secrets.username, secrets.scopes, client_id=secrets.cli_id, client_secret=secrets.cli_secret, redirect_uri=secrets.redir_uri)
+        if at['expires_at'] - int(time.time()) < 60:
+            token = util.prompt_for_user_token(secrets.username, secrets.scopes, client_id=secrets.cli_id, client_secret=secrets.cli_secret, redirect_uri=secrets.redir_uri)        
+        else:
+            token = at['access_token']
         sp_driver = spotipy.Spotify(auth=token)
         return sp_driver
     else:
@@ -27,11 +30,14 @@ def sp():
 
 # @debug
 def show_devices():
-    dev = sp().devices()
+    sptoken = sp()
+    print(str(sptoken))
+    dev = sptoken.devices()
     # index = 1
     # for d in dev['devices']:
     #     print(str(index),'. ',d['name'],' : ',d['volume_percent'])
     #     index = index + 1
+
     return dev
 
 def switch_device(id):
@@ -58,6 +64,7 @@ def vol_change(num):
 
 if __name__ == '__main__':
     option = 1
+
     while option != '0':
         option = input('''
         1. Show devices
@@ -65,8 +72,8 @@ if __name__ == '__main__':
         3. Pause
                     Choice: ''')
         if option == '1':
-            show_devices()
+            print(show_devices())
         elif option == '2':
             switch_device(input())
         elif option == '3':
-            pass
+            print(get_playback())

@@ -3,9 +3,11 @@ from luma.core.render import canvas
 from luma.lcd.device import pcd8544, st7735, uc1701x
 #from luma.lcd.aux import backlight
 from signal import pause
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
+# GPIO.setmode(GPIO.BCM)
+
+# GPIO.setup(4, GPIO.OUT)
 
 serial = spi(port=0, device=1) #, gpio_DC=24, gpio_RST=25)
 
@@ -26,4 +28,5 @@ def draw(a,b):
         draw.multiline_text([a,b], "This is a\nsample text", fill='white', spacing=2)
     # pause()
 
+# display.backlight(False)
 # draw(17,3)
