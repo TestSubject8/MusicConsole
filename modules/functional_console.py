@@ -1,4 +1,4 @@
-import json
+import json, time
 import spotipy
 import spotipy.util as util
 import secrets
@@ -9,40 +9,52 @@ def debug(func):
         return
     return debug_decor
 
-def sp():
-    # add code to check for existing alive token 
-    token = util.prompt_for_user_token(secrets.username, secrets.scopes, client_id=secrets.cli_id, client_secret=secrets.cli_secret, redirect_uri=secrets.redir_uri)
-    return spotipy.Spotify(auth=token)
+sp_driver = None
 
-@debug
+def sp():
+    global sp_driver
+    # add code to check for existing alive token 
+    at = json.loads(open('.cache-'+secrets.username).read())
+    if not sp_driver or at['expires_at'] - int(time.time()) < 60:
+        print("token refreshed")
+        token = util.prompt_for_user_token(secrets.username, secrets.scopes, client_id=secrets.cli_id, client_secret=secrets.cli_secret, redirect_uri=secrets.redir_uri)
+        sp_driver = spotipy.Spotify(auth=token)
+        return sp_driver
+    else:
+        print("token still alive")
+        return sp_driver
+    
+
+# @debug
 def show_devices():
     dev = sp().devices()
-    index = 1
-    for d in dev['devices']:
-        print(str(index),'. ',d['name'],' : ',d['volume_percent'])
-        index = index + 1
+    # index = 1
+    # for d in dev['devices']:
+    #     print(str(index),'. ',d['name'],' : ',d['volume_percent'])
+    #     index = index + 1
+    return dev
 
-def switch_device():
-    dev = sp().devices()
-    dev_id = dev['devices'][int(input('Device index: '))-1]['id']
-    sp().transfer_playback(dev_id)
+def switch_device(id):
+    # dev = sp().devices()
+    # dev_id = dev['devices'][int(input('Device index: '))-1]['id']
+    sp().transfer_playback(id)
+
+def get_playback():
+    tk = sp()
+    return tk.current_playback()
 
 def plpause():
     tk = sp()
-    info = tk.current_playback()['is_playing']
+    info = get_playback()['is_playing']
     if info:
         tk.pause_playback()
     else:
         tk.start_playback()
+    return info
 
-def get_vol():
+def vol_change(num):
     tk = sp()
-    return tk.current_playback()['device']['volume_percent']
-
-def vol_change():
-    pass
-    tk = sp()
-    tk.volume()
+    tk.volume(num)
 
 if __name__ == '__main__':
     option = 1

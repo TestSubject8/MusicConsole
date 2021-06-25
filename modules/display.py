@@ -10,11 +10,20 @@ GPIO.setmode(GPIO.BCM)
 serial = spi(port=0, device=1) #, gpio_DC=24, gpio_RST=25)
 
 display = pcd8544(serial, rotate=0)
-
+# bbox = display.bounding_box
 display.show()
 display.clear()
-display.contrast(50)
+display.contrast(56)
 
-with canvas(display) as draw:
-    draw.text((0,0), "Testing display and rot", fill='white')
+# with canvas(display) as draw:
+#     draw.text((0,0), "Testing display and rot", fill='white')
 # pause()
+
+def draw(a,b):
+    with canvas(display) as draw:
+        draw.rectangle(display.bounding_box, fill='black', outline='white')
+        draw.line([15,0,15,47], fill='white', width=1)
+        draw.multiline_text([a,b], "This is a\nsample text", fill='white', spacing=2)
+    # pause()
+
+# draw(17,3)
