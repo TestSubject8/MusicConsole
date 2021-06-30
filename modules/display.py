@@ -15,7 +15,7 @@ display = pcd8544(serial, rotate=0)
 # bbox = display.bounding_box
 display.show()
 display.clear()
-display.contrast(56)
+display.contrast(50)
 
 # with canvas(display) as draw:
 #     draw.text((0,0), "Testing display and rot", fill='white')
@@ -29,4 +29,6 @@ def draw(a,b):
     # pause()
 
 # display.backlight(False)
-# draw(17,3)
+if __name__ == '__main__':
+    draw(17,3)
+    # pause()

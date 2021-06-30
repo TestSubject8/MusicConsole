@@ -1,8 +1,13 @@
 ########## Basic functions: ###########
-        Start and stop music
-Done -  Transfer playback to another device - working with menu now
-    
+Start stop playback, current album progress, volume control
+Switch device (marks current too)
+Change display contrast, backlight toggle
+
 ########## Extra functions: ###########
         Party button
-        Playlist buttons (rotary selector (dammit i'll need a display))
-        Status leds
+        Playlist buttons 
+        # Status leds
+        capture errors
+        cache frequent http calls
+        errors in playback screen when playback is not happening
+        

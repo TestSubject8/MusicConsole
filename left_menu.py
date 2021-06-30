@@ -12,7 +12,7 @@ from modules.display import display, canvas
 # from modules.plpause import PlPause
 
 GPIO.setmode(GPIO.BCM)
-for x in [26, 16]:
+for x in [26, 17]: # 17 and 16 instead of 26 on the new one, current one has 26 and 17
     GPIO.setup(x, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 GPIO.setup(4, GPIO.OUT)

@@ -21,7 +21,11 @@ class Menu():
         self.console = console
         self.name = "Devices"
         self.dev = console.show_devices()['devices']
-        self.current = console.get_playback()['device']['name']
+        self.current = console.get_playback()
+        if self.current:
+            self.current = self.current['device']['name']
+        else:
+            self.current = "No playback"
         #TODO - run this to refresh list of devices - after the console fix for caching login tokens
         self.canvas = canvas
         self.display = display

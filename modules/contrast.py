@@ -15,7 +15,7 @@ class Menu():
     # but_select = Button(3)
     # but_select = Button(3)
     # index = 0
-    option = 56
+    option = 50
 
     def __init__(self, canvas, display, console):
         self.console = console
